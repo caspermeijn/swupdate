@@ -132,5 +132,21 @@ config UBOOT_FWENV
 	  in the tools directory. It tells to the user space
 	  where U-Boot environment is saved, that is, on which
 	  MTD device.
+    
+config GRUB
+	bool "grub"
+	default n
+	help
+	  Enable it to change GRUB environment
+	  during the installation process.
+
+config GRUB_ENV
+	string " Environment Configuration file"
+	depends on UBOOT
+	default "/etc/fw_env.config"
+	help
+	  This is the file described in U-Boot documentation
+	  in the tools directory. It tells where the U-Boot
+	  environment is saved.
 
 endmenu
