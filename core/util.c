@@ -50,7 +50,7 @@ char *sdup(const char *str) {
  * Replacement for fw_setenv() for calling inside
  * the library
  */
-#ifdef CONFIG_UBOOT
+#ifdef defined(CONFIG_UBOOT)
 int fw_set_one_env (const char *name, const char *value)
 {
 
@@ -60,6 +60,26 @@ int fw_set_one_env (const char *name, const char *value)
 	}
 	fw_env_write ((char *)name, (char *)value);
 	return fw_env_close (fw_env_opts);
+}
+#elif defined(CONFIG_GRUB)
+int fw_set_one_env (const char *name, const char *value)
+{
+	char buffer[1000];
+	int len = snprintf(buffer, 1000, "grub-editenv %s set %s=%s", CONFIG_GRUB_ENV, name, value);
+	if(len < 0) {
+		fprintf (stderr, "Error: environment not initialized (failed to generate command)\n");
+		return -1;
+	}
+	if(len > 1000) {
+		fprintf (stderr, "Error: environment not initialized (command too long)\n");
+		return -1;
+	}
+	int rc = system(buffer);
+	if (rc != 0) {
+		fprintf (stderr, "Error: environment not initialized (failed to grub-editenv)\n");
+		return rc;
+	}
+	return rc;
 }
 #else
 int fw_set_one_env (const char __attribute__ ((__unused__)) *name,
