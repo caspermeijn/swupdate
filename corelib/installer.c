@@ -199,6 +199,9 @@ static int update_uboot_env(void)
 	ret = fw_parse_script((char *)UBOOT_SCRIPT, fw_env_opts);
 	if (ret < 0)
 		ERROR("Error updating U-Boot environment");
+#else
+  TRACE("CME: update_uboot_env() called");
+  TRACE("CME: Unable to update U-boot environment");
 #endif
 	return ret;
 }
