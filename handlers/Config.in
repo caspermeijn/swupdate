@@ -141,12 +141,11 @@ config GRUB
 	  during the installation process.
 
 config GRUB_ENV
-	string " Environment Configuration file"
-	depends on UBOOT
-	default "/etc/fw_env.config"
+  string "GRUB Environment Configuration file"
+  depends on GRUB
+  default "/boot/EFI/grub/grubenv"
 	help
-	  This is the file described in U-Boot documentation
-	  in the tools directory. It tells where the U-Boot
+    It tells where the GRUB
 	  environment is saved.
 
 endmenu
